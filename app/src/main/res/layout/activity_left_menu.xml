@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.baitian.daisongsong.demo.module.leftmenu.LeftMenuLayout
+    android:id="@+id/mLeftMenuLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-300dp"
+        android:background="#f00"
+        android:text="1234567890123456789012345678901234567890"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0f0"
+        android:text="1234567890123456789012345678901234567890"
+        android:textSize="20dp"/>
+
+</com.baitian.daisongsong.demo.module.leftmenu.LeftMenuLayout>
