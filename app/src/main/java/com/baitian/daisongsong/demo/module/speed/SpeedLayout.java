@@ -38,6 +38,7 @@ public class SpeedLayout extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         mVelocityTracker.addMovement(event);
         StringBuilder sb = new StringBuilder();
+        mVelocityTracker.computeCurrentVelocity(3);
         sb.append(String.format("XVelocity=%f\n", mVelocityTracker.getXVelocity()));
         sb.append(String.format("YVelocity=%f", mVelocityTracker.getYVelocity()));
         mTextView.setText(sb.toString());
