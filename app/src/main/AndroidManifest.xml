@@ -22,7 +22,7 @@
 
         <service
             android:name=".service.MyTimeService"
-            android:process=":time" />
+            android:process=":time"/>
 
         <service
             android:name=".service.MyTimeService1"
@@ -33,6 +33,8 @@
         <activity android:name=".module.leftmenu.LeftMenuActivity"/>
 
         <activity android:name=".module.main.MainActivity"/>
+
+        <activity android:name=".module.speed.SpeedActivity"/>
     </application>
 
 </manifest>
