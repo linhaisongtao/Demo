@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -22,7 +21,8 @@ public class LeftMenuLayout extends LinearLayout {
     private static final int CHILD_COUNT = 2;
 
     private static final int ACTION_START_X = 200;
-    private static final long INTERVAL = 500;
+    private static final long INTERVAL = 200;
+    private static final int MIN_DISTANCE_TO_CHANGE_STATUS = 300;
 
     private View mMenuView;
     private View mContentView;
@@ -31,6 +31,7 @@ public class LeftMenuLayout extends LinearLayout {
     private int mContentOriginMarginRight = 0;
 
     private boolean mIsAnimator = false;
+    private boolean mMenuExpanded = false;
 
     public LeftMenuLayout(Context context) {
         this(context, null, 0);
@@ -55,8 +56,6 @@ public class LeftMenuLayout extends LinearLayout {
         mContentView = getChildAt(1);
     }
 
-    private boolean mMenuExpanded = false;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mMenuExpanded) {
@@ -74,13 +73,19 @@ public class LeftMenuLayout extends LinearLayout {
                     consume = false;
                     break;
                 }
+                mMenuOriginMarginLeft = ((MarginLayoutParams) mMenuView.getLayoutParams()).leftMargin;
+                mContentOriginMarginRight = ((MarginLayoutParams) mContentView.getLayoutParams()).rightMargin;
                 mFirstX = (int) event.getX();
                 consume = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 int dX = (int) (event.getX() - mFirstX);
-                offsetViews(-dX);
+                offsetViews(dX);
                 consume = true;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                positionToSuitablePosition((int) (event.getX() - mFirstX));
                 break;
         }
         return consume;
@@ -131,17 +136,35 @@ public class LeftMenuLayout extends LinearLayout {
     private void positionToSuitablePosition(int dX) {
         int endMenu = 0;
         int endContent = 0;
-        if (dX > 200) {
-            //go
-            endMenu = 0;
-            endContent = mMenuOriginMarginLeft;
-            mMenuExpanded = true;
+        if (mMenuExpanded) {
+            if (Math.abs(dX) > MIN_DISTANCE_TO_CHANGE_STATUS) {
+                //go
+                mMenuExpanded = false;
+                endMenu = mContentOriginMarginRight;
+                endContent = 0;
+            } else {
+                //resert
+                mMenuExpanded = true;
+                endMenu = 0;
+                endContent = mContentOriginMarginRight;
+            }
         } else {
-            //revert
-            endMenu = mMenuOriginMarginLeft;
-            endContent = 0;
-            mMenuExpanded = false;
+            if (Math.abs(dX) > MIN_DISTANCE_TO_CHANGE_STATUS) {
+                //go
+                endMenu = 0;
+                endContent = mMenuOriginMarginLeft;
+                mMenuExpanded = true;
+            } else {
+                //revert
+                endMenu = mMenuOriginMarginLeft;
+                endContent = 0;
+                mMenuExpanded = false;
+            }
         }
+        doAnimation(dX, endMenu, endContent);
+    }
+
+    private void doAnimation(int dX, int endMenu, int endContent) {
         ViewWrapper menuViewWrapper = new ViewWrapper(mMenuView);
         ObjectAnimator menuObjectAnimator = ObjectAnimator.ofInt(menuViewWrapper, "leftMargin", dX + mMenuOriginMarginLeft, endMenu).setDuration(INTERVAL);
         menuObjectAnimator.start();
