@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -33,6 +34,10 @@ public class LeftMenuLayout extends LinearLayout {
     private boolean mIsAnimator = false;
     private boolean mMenuExpanded = false;
 
+    private VelocityTracker mVelocityTracker;
+    private int UNIT_OF_VELOCITY = 100;
+    private int MIN_VELOCITY_TO_CHANGE_STATUS = 40;
+
     public LeftMenuLayout(Context context) {
         this(context, null, 0);
     }
@@ -44,6 +49,7 @@ public class LeftMenuLayout extends LinearLayout {
     public LeftMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOrientation(HORIZONTAL);
+        mVelocityTracker = VelocityTracker.obtain();
     }
 
     @Override
@@ -58,6 +64,7 @@ public class LeftMenuLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        mVelocityTracker.addMovement(event);
         if (mMenuExpanded) {
             return doMenuPack(event);
         } else {
@@ -79,16 +86,21 @@ public class LeftMenuLayout extends LinearLayout {
                 consume = true;
                 break;
             case MotionEvent.ACTION_MOVE:
-                int dX = (int) (event.getX() - mFirstX);
-                offsetViews(dX);
+                offsetViews(checkPackDx((int) (event.getX() - mFirstX)));
                 consume = true;
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                positionToSuitablePosition((int) (event.getX() - mFirstX));
+                positionToSuitablePosition(checkPackDx((int) (event.getX() - mFirstX)));
                 break;
         }
         return consume;
+    }
+
+    private int checkPackDx(int dX) {
+        dX = Math.max(dX, mContentOriginMarginRight);
+        dX = Math.min(0, dX);
+        return dX;
     }
 
     private boolean doMenuExpand(MotionEvent event) {
@@ -112,17 +124,21 @@ public class LeftMenuLayout extends LinearLayout {
                 mFirstX = x;
                 break;
             case MotionEvent.ACTION_MOVE:
-                int dX = (int) (event.getX() - mFirstX);
-                dX = Math.min(dX, Math.abs(mMenuOriginMarginLeft));
-                offsetViews(dX);
+                offsetViews(checkExpandDx((int) (event.getX() - mFirstX)));
                 consume = true;
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                positionToSuitablePosition((int) (event.getX() - mFirstX));
+                positionToSuitablePosition(checkExpandDx((int) (event.getX() - mFirstX)));
                 break;
         }
         return consume;
+    }
+
+    private int checkExpandDx(int dX) {
+        dX = Math.min(dX, Math.abs(mMenuOriginMarginLeft));
+        dX = Math.max(0, dX);
+        return dX;
     }
 
     private void offsetViews(int dX) {
@@ -144,9 +160,16 @@ public class LeftMenuLayout extends LinearLayout {
                 endContent = 0;
             } else {
                 //resert
-                mMenuExpanded = true;
-                endMenu = 0;
-                endContent = mContentOriginMarginRight;
+                mVelocityTracker.computeCurrentVelocity(UNIT_OF_VELOCITY);
+                if (-mVelocityTracker.getXVelocity() > MIN_VELOCITY_TO_CHANGE_STATUS) {
+                    mMenuExpanded = false;
+                    endMenu = mContentOriginMarginRight;
+                    endContent = 0;
+                } else {
+                    mMenuExpanded = true;
+                    endMenu = 0;
+                    endContent = mContentOriginMarginRight;
+                }
             }
         } else {
             if (Math.abs(dX) > MIN_DISTANCE_TO_CHANGE_STATUS) {
@@ -156,9 +179,16 @@ public class LeftMenuLayout extends LinearLayout {
                 mMenuExpanded = true;
             } else {
                 //revert
-                endMenu = mMenuOriginMarginLeft;
-                endContent = 0;
-                mMenuExpanded = false;
+                mVelocityTracker.computeCurrentVelocity(UNIT_OF_VELOCITY);
+                if (mVelocityTracker.getXVelocity() > MIN_VELOCITY_TO_CHANGE_STATUS) {
+                    endMenu = 0;
+                    endContent = mMenuOriginMarginLeft;
+                    mMenuExpanded = true;
+                } else {
+                    endMenu = mMenuOriginMarginLeft;
+                    endContent = 0;
+                    mMenuExpanded = false;
+                }
             }
         }
         doAnimation(dX, endMenu, endContent);
