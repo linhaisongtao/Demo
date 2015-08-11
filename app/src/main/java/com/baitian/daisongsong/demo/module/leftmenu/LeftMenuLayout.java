@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -54,51 +55,99 @@ public class LeftMenuLayout extends LinearLayout {
         mContentView = getChildAt(1);
     }
 
+    private boolean mMenuExpanded = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean consume = true;
+        if (mMenuExpanded) {
+            return doMenuPack(event);
+        } else {
+            return doMenuExpand(event);
+        }
+    }
+
+    private boolean doMenuPack(MotionEvent event) {
+        boolean consume = false;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mFirstX = (int) event.getX();
-                if (mFirstX > ACTION_START_X || mIsAnimator) {
+                if (mIsAnimator) {
                     consume = false;
-                } else {
-                    LayoutParams lp = (LayoutParams) mMenuView.getLayoutParams();
-                    mMenuOriginMarginLeft = lp.leftMargin;
-
-                    LayoutParams lpContent = (LayoutParams) mContentView.getLayoutParams();
-                    mContentOriginMarginRight = lpContent.rightMargin;
-
+                    break;
                 }
+                mFirstX = (int) event.getX();
+                consume = true;
                 break;
             case MotionEvent.ACTION_MOVE:
-                placeToPosition((int) (event.getX() - mFirstX));
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                resetToOriginPosition((int) (event.getX() - mFirstX));
+                int dX = (int) (event.getX() - mFirstX);
+                offsetViews(-dX);
+                consume = true;
                 break;
         }
         return consume;
     }
 
-    private void placeToPosition(int dX) {
-        LayoutParams lp = (LayoutParams) mMenuView.getLayoutParams();
-        lp.leftMargin = mMenuOriginMarginLeft + dX;
+    private boolean doMenuExpand(MotionEvent event) {
+        boolean consume = false;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (mIsAnimator) {
+                    consume = false;
+                    break;
+                }
 
-        LayoutParams lpContent = (LayoutParams) mContentView.getLayoutParams();
+                int x = (int) event.getX();
+                if (x > ACTION_START_X) {
+                    consume = false;
+                    break;
+                }
+
+                mMenuOriginMarginLeft = ((MarginLayoutParams) mMenuView.getLayoutParams()).leftMargin;
+                mContentOriginMarginRight = ((MarginLayoutParams) mContentView.getLayoutParams()).rightMargin;
+                consume = true;
+                mFirstX = x;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int dX = (int) (event.getX() - mFirstX);
+                dX = Math.min(dX, Math.abs(mMenuOriginMarginLeft));
+                offsetViews(dX);
+                consume = true;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                positionToSuitablePosition((int) (event.getX() - mFirstX));
+                break;
+        }
+        return consume;
+    }
+
+    private void offsetViews(int dX) {
+        MarginLayoutParams lpMenu = (MarginLayoutParams) mMenuView.getLayoutParams();
+        lpMenu.leftMargin = mMenuOriginMarginLeft + dX;
+        MarginLayoutParams lpContent = (MarginLayoutParams) mContentView.getLayoutParams();
         lpContent.rightMargin = mContentOriginMarginRight - dX;
-
         requestLayout();
     }
 
-    private void resetToOriginPosition(int dX) {
+    private void positionToSuitablePosition(int dX) {
+        int endMenu = 0;
+        int endContent = 0;
+        if (dX > 200) {
+            //go
+            endMenu = 0;
+            endContent = mMenuOriginMarginLeft;
+            mMenuExpanded = true;
+        } else {
+            //revert
+            endMenu = mMenuOriginMarginLeft;
+            endContent = 0;
+            mMenuExpanded = false;
+        }
         ViewWrapper menuViewWrapper = new ViewWrapper(mMenuView);
-        ObjectAnimator menuObjectAnimator = ObjectAnimator.ofInt(menuViewWrapper, "leftMargin", dX + mMenuOriginMarginLeft, mMenuOriginMarginLeft).setDuration(INTERVAL);
+        ObjectAnimator menuObjectAnimator = ObjectAnimator.ofInt(menuViewWrapper, "leftMargin", dX + mMenuOriginMarginLeft, endMenu).setDuration(INTERVAL);
         menuObjectAnimator.start();
 
         ViewWrapper contentViewWrapper = new ViewWrapper(mContentView);
-        ObjectAnimator contentObjectAnimator = ObjectAnimator.ofInt(contentViewWrapper, "rightMargin", -dX + mContentOriginMarginRight, mContentOriginMarginRight).setDuration(INTERVAL);
+        ObjectAnimator contentObjectAnimator = ObjectAnimator.ofInt(contentViewWrapper, "rightMargin", -dX + mContentOriginMarginRight, endContent).setDuration(INTERVAL);
         contentObjectAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -122,7 +171,6 @@ public class LeftMenuLayout extends LinearLayout {
         });
         contentObjectAnimator.start();
     }
-
 
     private static class ViewWrapper {
         private View mView;
