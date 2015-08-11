@@ -6,13 +6,42 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <TextView
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="-300dp"
-        android:background="#f00"
-        android:text="1234567890123456789012345678901234567890"
-        android:textSize="20dp"/>
+        android:background="#f0c"
+        android:divider="@drawable/selector_left_menu_demo_menu_divider"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:text="这是Menu1"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:text="这是Menu2"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:text="这是Menu3"
+            android:textSize="20dp"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
