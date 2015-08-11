@@ -8,6 +8,7 @@ import com.baitian.daisongsong.demo.R;
 import com.baitian.daisongsong.demo.base.BaseActivity;
 import com.baitian.daisongsong.demo.module.leftmenu.LeftMenuActivity;
 import com.baitian.daisongsong.demo.module.speed.SpeedActivity;
+import com.baitian.daisongsong.demo.utils.T;
 
 /**
  * Created by daisongsong on 2015/7/30.
@@ -31,6 +32,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SpeedActivity.class));
+            }
+        });
+
+        findViewById(R.id.mButtonShowToast).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                T.show("mButtonShowToast");
             }
         });
     }

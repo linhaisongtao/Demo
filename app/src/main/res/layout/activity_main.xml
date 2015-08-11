@@ -15,4 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:text="SpeedDemo"/>
+
+    <Button
+        android:id="@+id/mButtonShowToast"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="ShowToast"/>
 </LinearLayout>
