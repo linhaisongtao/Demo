@@ -7,6 +7,7 @@ import android.view.View;
 import com.baitian.daisongsong.demo.R;
 import com.baitian.daisongsong.demo.base.BaseActivity;
 import com.baitian.daisongsong.demo.module.leftmenu.LeftMenuActivity;
+import com.baitian.daisongsong.demo.module.refreshlistview.RefreshListViewActivity;
 import com.baitian.daisongsong.demo.module.speed.SpeedActivity;
 import com.baitian.daisongsong.demo.utils.T;
 
@@ -39,6 +40,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 T.show("mButtonShowToast");
+            }
+        });
+
+        findViewById(R.id.mButtonRefreshListView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RefreshListViewActivity.class));
             }
         });
     }

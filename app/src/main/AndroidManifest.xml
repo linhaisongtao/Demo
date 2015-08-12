@@ -36,6 +36,8 @@
         <activity android:name=".module.main.MainActivity"/>
 
         <activity android:name=".module.speed.SpeedActivity"/>
+
+        <activity android:name=".module.refreshlistview.RefreshListViewActivity" />
     </application>
 
 </manifest>

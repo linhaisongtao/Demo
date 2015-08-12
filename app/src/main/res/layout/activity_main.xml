@@ -8,17 +8,27 @@
         android:id="@+id/mButtonLeftMenuDemo"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:inputType="text"
         android:text="LeftMenuDemo"/>
 
     <Button
         android:id="@+id/mButtonSpeedDemo"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:inputType="text"
         android:text="SpeedDemo"/>
 
     <Button
         android:id="@+id/mButtonShowToast"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:inputType="text"
         android:text="ShowToast"/>
+
+    <Button
+        android:id="@+id/mButtonRefreshListView"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:inputType="text"
+        android:text="RefreshListView"/>
 </LinearLayout>
