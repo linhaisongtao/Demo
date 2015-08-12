@@ -7,5 +7,17 @@
     <com.baitian.daisongsong.demo.module.refreshlistview.RefreshListView
         android:id="@+id/mRefreshListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#f0c"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.baitian.daisongsong.demo.module.refreshlistview.RefreshListView>
 </LinearLayout>

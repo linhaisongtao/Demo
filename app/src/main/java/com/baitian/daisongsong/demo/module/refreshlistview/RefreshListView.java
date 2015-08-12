@@ -1,10 +1,10 @@
 package com.baitian.daisongsong.demo.module.refreshlistview;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import junit.framework.Assert;
 
@@ -12,8 +12,8 @@ import junit.framework.Assert;
  * Created by daisongsong on 2015/8/12.
  */
 public class RefreshListView extends LinearLayout {
-    private ListView mListView;
     private View mHeaderView;
+    private RecyclerView mRecyclerView;
 
     public RefreshListView(Context context) {
         super(context);
@@ -35,6 +35,6 @@ public class RefreshListView extends LinearLayout {
         final int childCount = getChildCount();
         Assert.assertEquals(childCount, 2);
         mHeaderView = getChildAt(0);
-        mListView = (ListView) getChildAt(1);
+        mRecyclerView = (RecyclerView) getChildAt(1);
     }
 }
