@@ -2,9 +2,9 @@ package com.baitian.daisongsong.demo.module.refreshlistview;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,8 +23,8 @@ public class RefreshListViewActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refresh_list_view);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
