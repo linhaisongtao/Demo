@@ -38,4 +38,11 @@
         android:layout_height="55dp"
         android:inputType="text"
         android:text="ResetContentView"/>
+
+    <Button
+        android:id="@+id/mButtonOkHttp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:inputType="text"
+        android:text="OkHttp"/>
 </LinearLayout>

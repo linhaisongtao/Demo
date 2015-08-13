@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="ANDROID.PERMISSION.INTERNET"/>
 
     <application
         android:name=".base.Core"
@@ -37,7 +38,9 @@
 
         <activity android:name=".module.speed.SpeedActivity"/>
 
-        <activity android:name=".module.refreshlistview.RefreshListViewActivity" />
+        <activity android:name=".module.refreshlistview.RefreshListViewActivity"/>
+
+        <activity android:name=".module.okhttpdemo.OkHttpActivity"/>
     </application>
 
 </manifest>
