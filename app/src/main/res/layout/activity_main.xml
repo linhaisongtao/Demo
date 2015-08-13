@@ -31,4 +31,11 @@
         android:layout_height="55dp"
         android:inputType="text"
         android:text="RefreshListView"/>
+
+    <Button
+        android:id="@+id/mButtonResetContentView"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:inputType="text"
+        android:text="ResetContentView"/>
 </LinearLayout>

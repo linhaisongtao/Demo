@@ -49,5 +49,12 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, RefreshListViewActivity.class));
             }
         });
+
+        findViewById(R.id.mButtonResetContentView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_main);
+            }
+        });
     }
 }
