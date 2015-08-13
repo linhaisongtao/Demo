@@ -2,6 +2,7 @@ package com.baitian.daisongsong.demo.base;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 
 /**
@@ -15,12 +16,15 @@ public class SwipeBackActivity extends Activity {
         mSwipeBackLayout = new SwipeBackLayout(this);
         LayoutInflater.from(this).inflate(layoutResID, mSwipeBackLayout);
         setContentView(mSwipeBackLayout);
-        getWindow().getDecorView().findViewById(android.R.id.content).setBackgroundColor(Color.TRANSPARENT);
         mSwipeBackLayout.setSwipeBackListener(new SwipeBackLayout.SwipeBackListener() {
             @Override
             public void finishActivity() {
                 finish();
             }
         });
+
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getWindow().getDecorView().setBackgroundDrawable(null);
+
     }
 }
