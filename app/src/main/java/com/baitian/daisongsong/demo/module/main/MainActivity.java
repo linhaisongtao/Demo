@@ -9,6 +9,7 @@ import com.baitian.daisongsong.demo.base.BaseActivity;
 import com.baitian.daisongsong.demo.module.leftmenu.LeftMenuActivity;
 import com.baitian.daisongsong.demo.module.okhttpdemo.OkHttpActivity;
 import com.baitian.daisongsong.demo.module.refreshlistview.RefreshListViewActivity;
+import com.baitian.daisongsong.demo.module.reuse.ReuseActivity;
 import com.baitian.daisongsong.demo.module.speed.SpeedActivity;
 import com.baitian.daisongsong.demo.utils.T;
 
@@ -64,6 +65,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, OkHttpActivity.class));
+            }
+        });
+
+        findViewById(R.id.mButtonReuse).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ReuseActivity.class));
             }
         });
 

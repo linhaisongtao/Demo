@@ -41,6 +41,8 @@
         <activity android:name=".module.refreshlistview.RefreshListViewActivity"/>
 
         <activity android:name=".module.okhttpdemo.OkHttpActivity"/>
+
+        <activity android:name=".module.reuse.ReuseActivity" />
     </application>
 
 </manifest>

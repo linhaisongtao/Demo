@@ -45,4 +45,11 @@
         android:layout_height="55dp"
         android:inputType="text"
         android:text="OkHttp"/>
+
+    <Button
+        android:id="@+id/mButtonReuse"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:inputType="text"
+        android:text="mButtonReuse"/>
 </LinearLayout>
